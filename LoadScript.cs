@@ -29,6 +29,7 @@ namespace kOS_IDE
             fd.Description = "Locate your KSP directory";
             if (fd.ShowDialog() != DialogResult.OK) return;
             _ksp = fd.SelectedPath;
+            AppOptions.KSPfolder = fd.SelectedPath;
         }
 
         public LoadScript(string KSPdir)
@@ -36,7 +37,15 @@ namespace kOS_IDE
             InitializeComponent();
 
             _fName = null;
-            _ksp = KSPdir;
+            if (String.IsNullOrWhiteSpace(KSPdir))
+            {
+                FolderBrowserDialog fd = new FolderBrowserDialog();
+                fd.Description = "Locate your KSP directory";
+                if (fd.ShowDialog() != DialogResult.OK) return;
+                _ksp = fd.SelectedPath;
+                AppOptions.KSPfolder = fd.SelectedPath;
+            }
+            else _ksp = KSPdir;
         }
 
         private void OK_Click(object sender, EventArgs e)

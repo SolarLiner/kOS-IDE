@@ -56,8 +56,10 @@
             this.SaveFile = new System.Windows.Forms.SaveFileDialog();
             this.SaveHTML = new System.Windows.Forms.SaveFileDialog();
             this.opts = new kOS_IDE.Options();
+            this.Editor = new ScintillaNET.Scintilla();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Editor)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -298,6 +300,28 @@
             this.opts.TabIndex = 4;
             this.opts.Visible = false;
             // 
+            // Editor
+            // 
+            this.Editor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Editor.AutoComplete.AutoHide = false;
+            this.Editor.AutoComplete.IsCaseSensitive = false;
+            this.Editor.AutoComplete.ListString = "";
+            this.Editor.ConfigurationManager.CustomLocation = "syntax.xml";
+            this.Editor.ConfigurationManager.Language = "kos";
+            this.Editor.IsBraceMatching = true;
+            this.Editor.Location = new System.Drawing.Point(0, 27);
+            this.Editor.Margins.Left = 0;
+            this.Editor.Margins.Margin0.AutoToggleMarkerNumber = 0;
+            this.Editor.Margins.Margin0.Width = 20;
+            this.Editor.Name = "Editor";
+            this.Editor.Scrolling.HorizontalWidth = 2;
+            this.Editor.Size = new System.Drawing.Size(952, 497);
+            this.Editor.TabIndex = 3;
+            this.Editor.TextChanged += new System.EventHandler(this.Editor_TextChanged);
+            this.Editor.Enter += new System.EventHandler(this.Editor_Enter);
+            // 
             // TextEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -306,6 +330,7 @@
             this.Controls.Add(this.opts);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.Editor);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "TextEditor";
             this.Text = "kOS IDE - Unknown";
@@ -314,6 +339,7 @@
             this.toolStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Editor)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -341,7 +367,6 @@
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshAutoCompletionListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bBCodeToolStripMenuItem;
-        internal ScintillaNET.Scintilla Editor;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private Options opts;
@@ -350,6 +375,7 @@
         private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem replaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem textToolStripMenuItem;
+        internal ScintillaNET.Scintilla Editor;
     }
 }
 

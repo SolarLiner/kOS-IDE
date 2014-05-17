@@ -292,7 +292,7 @@ namespace kOS_IDE
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadScript ls = new LoadScript();
+            LoadScript ls = new LoadScript(AppOptions.KSPfolder);
             if (ls.ShowDialog() != DialogResult.OK) return;
 
             filename = ls.FileName;

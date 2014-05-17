@@ -13,7 +13,7 @@ namespace kOS_IDE
 {
     public partial class GlobalOptions : Form
     {
-        bool Is64OS;        
+        bool Is64OS;
         
         [DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
         [return: MarshalAs(UnmanagedType.Bool)]
