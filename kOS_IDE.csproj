@@ -112,6 +112,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="var.png" />
+    <None Include="keyword.png" />
+    <None Include="class.png" />
     <Content Include="SciLexer.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

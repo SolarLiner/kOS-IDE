@@ -17,7 +17,7 @@ using ScintillaNET;
  */
 
 
-[assembly: AssemblyVersion("0.40.*")] // Remember to change that at next release.
+[assembly: AssemblyVersion("0.37.*")] // Remember to change that at next release.
 
 namespace kOS_IDE
 {
@@ -39,8 +39,9 @@ namespace kOS_IDE
                 string version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() +"."+ Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
                 try
                 {
-                    if (value == null) this.Text = "kOS IDE v" + version + " - Unknown";
-                    else this.Text = "kOS IDE v" + version + " - " + value;
+                    string text = "Unknown";
+                    if (!String.IsNullOrWhiteSpace(value)) this.Text = "kOS IDE v" + version + " - " + Path.GetFileName(value);
+                    else this.Text = "kOS IDE v" + version + " - Unknown";
                 }
                 catch { }
             }
@@ -66,18 +67,21 @@ namespace kOS_IDE
 
         // Syntax words
         string[] args1 =
-            { "set", "print", "until", "if", "switch", "copy", "from", "delete", "declare", "edit", "list", "lock", "unlock", "on", "off", "rename", "run", "toggle", "unlock",
+            { "set", "print", "until", "if", "switch", "copy", "from", "delete", "declare", "edit", "list", "lock", "on", "off", "rename", "run", "toggle", "unlock",
                 "wait", "when", "sin", "cos", "tan", "arcsin", "arccos", "arctan", "arctan2", "abs", "R", "rename"};
         string[] args2 = 
-            { "target", "break", "clearscreen", "reboot", "shutdown", "stage", "all", "vesselname", "altitude", "radar", "body", "missiontime", "velocity",
+            { "target", "break", "clearscreen", "reboot", "shutdown", "stage", "all", "vesselname", "altitude", "radar", "missiontime", "velocity",
                 "then", "abort", "ag1", "ag2", "ag3", "ag4", "ag5", "ag6", "ag7", "ag8", "ag9", "ag10", "volume", "volumes", "file", "files", "parts",
                 "resources", "engines", "targets", "bodies", "parameter", "at", "to", "VESSEL",
-                "landed", "splashed", "flying", "sub_orbital", "orbiting", "escaping", "docked"};
+                "landed", "splashed", "flying", "sub_orbital", "orbiting", "escaping", "docked",
+                "liquidfuel", "oxidizer", "electriccharge", "intakeair", "solidfuel",
+                "major", "minor", "sessiontime"};
         string[] args3 =
             { "throttle", "steering", "wheelthrottle", "wheelsteering", "brakes", "gear", "legs", "chutes", "lights", "rcs", "sas", "target", "altitude", "alt",
-                "apoapsis", "periapsis", "eta", "missiontime", "sessiontime", "warp", "angularmomentum", "angularvel", "surfacespeed", "verticalspeed",
-                "liquidfuel", "oxidizer", "velocity", "facing", "geoposition", "heading", "latitude", "longitude", "mag", "node", "north", "prograde",
-                "retrograde", "up", "body", "mass", "maxthrust", "status", "stage", "target", "vesselname","commrange", "incommrange", "inlight"};
+                "apoapsis", "periapsis", "eta", "sessiontime", "warp", "angularmomentum", "angularvel", "surfacespeed", "verticalspeed",
+                "facing", "geoposition", "heading", "latitude", "longitude", "mag", "node", "north", "prograde",
+                "retrograde", "up", "body", "mass", "maxthrust", "status", "stage", "target", "commrange", "incommrange", "inlight",
+                "version"};
 
         void InitAutoComplete()
         {
@@ -88,19 +92,26 @@ namespace kOS_IDE
 
             foreach (string arg in args1)
             {
-                KeysAndVars.Add(arg + "?1");
+                KeysAndVars.Add(arg + "?0");
             }
 
             foreach (string arg in args2)
             {
-                KeysAndVars.Add(arg + "?2");
+                KeysAndVars.Add(arg + "?1");
             }
 
             foreach (string arg in args3)
             {
-                KeysAndVars.Add(arg + "?3");
+                KeysAndVars.Add(arg + "?2");
             }
 
+            // Register Images
+            ImageList imgs = new ImageList();
+            imgs.Images.Add(Properties.Resources.keyword);
+            imgs.Images.Add(Properties.Resources._class);
+            imgs.Images.Add(Properties.Resources.var);
+
+            Editor.AutoComplete.RegisterImages(imgs, Color.Black);
 
             Subitems = new List<string>(new string[] {"distance?2", "apoapsis?2", "periapsis?2", "up?2", "pitch?2", "yaw?2", "roll?2", "mag?2", "deltav?2",
                                                         "burnvector?2", "time?2", "clock?2", "calendar?2", "year?2", "day?2", "hour?2", "minute?2", "second?2"});
@@ -118,9 +129,7 @@ namespace kOS_IDE
             opts.Owner = this;
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() +"."+ Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
-            this.Text = "kOS IDE v" + version + " - Unknown";
-
-            filename = null;
+            filename = "";
 
             InitAutoComplete();
 
@@ -366,7 +375,7 @@ namespace kOS_IDE
             const uint SCI_MARGINSETTEXT = 0x09E2;
 
             Editor.Margins.Margin1.Width = 30;
-            Editor.NativeInterface.SendMessageDirect(SCI_SETMARGINTYPEN, 1, 4);
+            Editor.NativeInterface.SendMessageDirect(SCI_SETMARGINTYPEN, 0, 4);
             for (int i = e.FirstLine - 1; i < e.LastLine - 1; i++)
             {
                 // Enter custom Scintilla message here for margin number
@@ -623,6 +632,11 @@ namespace kOS_IDE
             {
                 System.IO.File.WriteAllText(sfd.FileName, Editor.Text);
             }
+        }
+
+        private void TextEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AppOptions.Save("./config.cfg");
         }
     }
 }
