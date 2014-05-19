@@ -334,7 +334,6 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "TextEditor";
             this.Text = "kOS IDE - Unknown";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TextEditor_FormClosing);
             this.Load += new System.EventHandler(this.TextEditor_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

@@ -228,6 +228,8 @@
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Global Options";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GlobalOptions_FormClosing);
+            this.Load += new System.EventHandler(this.GlobalOptions_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

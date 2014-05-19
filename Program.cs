@@ -18,7 +18,7 @@ namespace kOS_IDE
             OpenedForms.Init();
             Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 
-            try { AppOptions.Load("config.cfg"); }
+            try { AppOptions.Load("./config.cfg"); }
             catch { AppOptions.Default(); MessageBox.Show("Cannot load config file. Loading factory default ...", "IO Error", MessageBoxButtons.OK, MessageBoxIcon.Information); }
 
             Application.Run(new TextEditor());

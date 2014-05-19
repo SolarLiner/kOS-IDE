@@ -68,19 +68,18 @@ namespace kOS_IDE
         // Syntax words
         string[] args1 =
             { "set", "print", "until", "if", "switch", "copy", "from", "delete", "declare", "edit", "list", "lock", "on", "off", "rename", "run", "toggle", "unlock",
-                "wait", "when", "sin", "cos", "tan", "arcsin", "arccos", "arctan", "arctan2", "abs", "R", "rename"};
+                "wait", "when", "sin", "cos", "tan", "arcsin", "arccos", "arctan", "arctan2", "abs", "R"};
         string[] args2 = 
-            { "target", "break", "clearscreen", "reboot", "shutdown", "stage", "all", "vesselname", "altitude", "radar", "missiontime", "velocity",
+            {   "target", "break", "clearscreen", "reboot", "shutdown", "stage", "all", "vesselname", "altitude", "radar", "missiontime", "velocity",
                 "then", "abort", "ag1", "ag2", "ag3", "ag4", "ag5", "ag6", "ag7", "ag8", "ag9", "ag10", "volume", "volumes", "file", "files", "parts",
                 "resources", "engines", "targets", "bodies", "parameter", "at", "to", "VESSEL",
                 "landed", "splashed", "flying", "sub_orbital", "orbiting", "escaping", "docked",
                 "liquidfuel", "oxidizer", "electriccharge", "intakeair", "solidfuel",
-                "major", "minor", "sessiontime"};
-        string[] args3 =
-            { "throttle", "steering", "wheelthrottle", "wheelsteering", "brakes", "gear", "legs", "chutes", "lights", "rcs", "sas", "target", "altitude", "alt",
+                "major", "minor",
+                "throttle", "steering", "wheelthrottle", "wheelsteering", "brakes", "gear", "legs", "chutes", "lights", "rcs", "sas", "altitude", "alt",
                 "apoapsis", "periapsis", "eta", "sessiontime", "warp", "angularmomentum", "angularvel", "surfacespeed", "verticalspeed",
                 "facing", "geoposition", "heading", "latitude", "longitude", "mag", "node", "north", "prograde",
-                "retrograde", "up", "body", "mass", "maxthrust", "status", "stage", "target", "commrange", "incommrange", "inlight",
+                "retrograde", "up", "body", "mass", "maxthrust", "status", "commrange", "incommrange", "inlight",
                 "version"};
 
         void InitAutoComplete()
@@ -98,11 +97,6 @@ namespace kOS_IDE
             foreach (string arg in args2)
             {
                 KeysAndVars.Add(arg + "?1");
-            }
-
-            foreach (string arg in args3)
-            {
-                KeysAndVars.Add(arg + "?2");
             }
 
             // Register Images
@@ -140,7 +134,6 @@ namespace kOS_IDE
             string arg2 = "";
             foreach (string arg in args2) arg2 += arg + " ";
             string arg3 = "";
-            foreach (string arg in args3) arg3 += arg + " ";
 
             Editor.Lexing.SetKeywords(0, arg1);
             Editor.Lexing.SetKeywords(1, arg2);
@@ -165,8 +158,8 @@ namespace kOS_IDE
             Editor.AutoComplete.DropRestOfWord = false;
             Editor.AutoComplete.AutoHide = false;
             Editor.AutoComplete.AutomaticLengthEntered = true;
-            Editor.AutoComplete.StopCharacters = " ";
-            Editor.AutoComplete.FillUpCharacters = "\t:.";
+            Editor.AutoComplete.StopCharacters = "{SPACE}";
+            Editor.AutoComplete.FillUpCharacters = "{TAB}:.";
 
             Editor.Indentation.BackspaceUnindents = true;
             Editor.Indentation.IndentWidth = 4;
@@ -201,6 +194,7 @@ namespace kOS_IDE
             int next = r.Next(1, msgs.Length) - 1;
             Status.Text = msgs[next];
 #endif
+            
             if (!_faststart)
             {
                 string[] envarg = Environment.GetCommandLineArgs();
@@ -253,18 +247,15 @@ namespace kOS_IDE
 
                         if (("set" == words[minTwo] || "lock" == words[minTwo]))
                         {
-                            if (KeysAndVars.Any(s => s == words[minOne])) break;
-                            KeysAndVars.Add(words[minOne] + "?3");
+                            if (KeysAndVars.Any(s => s.Substring(0, s.Length-2) == words[minOne])) break;
+                            KeysAndVars.Add(words[minOne] + "?2");
                             KeysAndVars.Sort();
+                            Editor.AutoComplete.List = KeysAndVars;
                         }
                         break;
 
                     case ':':
                         Editor.AutoComplete.Show(Subitems);
-                        break;
-
-                    case '.':
-                        Editor.AutoComplete.Cancel();
                         break;
 
                     default:
@@ -284,10 +275,11 @@ namespace kOS_IDE
                 {
                     i++;
                     if (KeysAndVars.Any(s => s == words[i])) continue;
-                    KeysAndVars.Add(words[i] + "?3");
+                    KeysAndVars.Add(words[i] + "?2");
                 }
             }
             KeysAndVars.Sort();
+            Editor.AutoComplete.List = KeysAndVars;
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -632,11 +624,6 @@ namespace kOS_IDE
             {
                 System.IO.File.WriteAllText(sfd.FileName, Editor.Text);
             }
-        }
-
-        private void TextEditor_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            AppOptions.Save("./config.cfg");
         }
     }
 }

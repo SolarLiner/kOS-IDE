@@ -46,6 +46,13 @@ namespace kOS_IDE
             }
         }
 
+        public static string GetSteamInstall(bool Is64OS)
+        {
+            string pFiles = (Is64OS ? "Program Files (x86)" : "Program Files");
+
+            return @"C:\" + pFiles + @"\Steam\SteamApps\common\Kerbal Space Program";
+        }
+
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox1.Checked)
@@ -53,9 +60,7 @@ namespace kOS_IDE
                 KSPdir.Enabled = false;
                 FindKSP.Enabled = false;
 
-                string pFiles = (Is64OS ? "Program Files (x86)" : "Program Files");
-
-                KSPdir.Text = @"C:\" + pFiles + @"\Steam\SteamApps\common\Kerbal Space Program";
+                KSPdir.Text = GetSteamInstall(Is64OS);
             }
             else
             {
@@ -100,6 +105,20 @@ namespace kOS_IDE
         private void SmartIndent_CheckedChanged(object sender, EventArgs e)
         {
             AppOptions.SmartIndent = SmartIndent.Checked;
+        }
+
+        private void GlobalOptions_Load(object sender, EventArgs e)
+        {
+            AppOptions.Load("./config.cfg");
+            
+            if (AppOptions.KSPfolder == GetSteamInstall(Is64OS))
+                checkBox1.Checked = true;
+            else if (!String.IsNullOrWhiteSpace(AppOptions.KSPfolder)) KSPdir.Text = AppOptions.KSPfolder;
+        }
+
+        private void GlobalOptions_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AppOptions.Save("./config.cfg");
         }
     }
 
