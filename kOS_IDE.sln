@@ -1,7 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kOS_IDE", "kOS_IDE.csproj", "{6CFB822F-A4C3-4FCE-8453-52CA1B417541}"
+# Visual Studio 2010
+# SharpDevelop 5.0
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kOS_IDE_Win32", "kOS_IDE_Win32.csproj", "{6CFB822F-A4C3-4FCE-8453-52CA1B417541}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kOS_IDE_mono", "..\kOS_IDE_mono\kOS_IDE_mono.csproj", "{3719496C-7C6C-4D61-88B7-747C5F606D08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +16,10 @@ Global
 		{6CFB822F-A4C3-4FCE-8453-52CA1B417541}.Debug|x86.Build.0 = Debug|x86
 		{6CFB822F-A4C3-4FCE-8453-52CA1B417541}.Release|x86.ActiveCfg = Release|x86
 		{6CFB822F-A4C3-4FCE-8453-52CA1B417541}.Release|x86.Build.0 = Release|x86
+		{3719496C-7C6C-4D61-88B7-747C5F606D08}.Debug|x86.ActiveCfg = Debug|x86
+		{3719496C-7C6C-4D61-88B7-747C5F606D08}.Debug|x86.Build.0 = Debug|x86
+		{3719496C-7C6C-4D61-88B7-747C5F606D08}.Release|x86.ActiveCfg = Release|x86
+		{3719496C-7C6C-4D61-88B7-747C5F606D08}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

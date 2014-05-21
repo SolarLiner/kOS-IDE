@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>kOS_IDE</RootNamespace>
-    <AssemblyName>kOS_IDE</AssemblyName>
+    <AssemblyName>kOS_IDE_Win32</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -34,6 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'linux_x86' " />
   <ItemGroup>
     <Reference Include="ScintillaNET, Version=2.5.2.0, Culture=neutral, PublicKeyToken=948d6c9751444115, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -115,6 +116,7 @@
     <None Include="var.png" />
     <None Include="keyword.png" />
     <None Include="class.png" />
+    <Content Include="ProfilingSessions\Session20140521_150729.sdps" />
     <Content Include="SciLexer.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

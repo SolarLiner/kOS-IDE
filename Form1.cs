@@ -1,23 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing;
 using ScintillaNET;
 
-/* TODO List:
- * Use custom Margin (see Pizza post)
- * Load stripped file and save non-stripped file into subfolder (like ".koside")
- * Update syntax
- */
 
-
-[assembly: AssemblyVersion("0.37.*")] // Remember to change that at next release.
+[assembly: AssemblyVersion("0.37.*")] // TODO: Change before release
 
 namespace kOS_IDE
 {
@@ -39,7 +31,6 @@ namespace kOS_IDE
                 string version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() +"."+ Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
                 try
                 {
-                    string text = "Unknown";
                     if (!String.IsNullOrWhiteSpace(value)) this.Text = "kOS IDE v" + version + " - " + Path.GetFileName(value);
                     else this.Text = "kOS IDE v" + version + " - Unknown";
                 }
@@ -100,7 +91,7 @@ namespace kOS_IDE
             }
 
             // Register Images
-            ImageList imgs = new ImageList();
+            var imgs = new ImageList();
             imgs.Images.Add(Properties.Resources.keyword);
             imgs.Images.Add(Properties.Resources._class);
             imgs.Images.Add(Properties.Resources.var);
@@ -590,7 +581,7 @@ namespace kOS_IDE
             Editor.FindReplace.ShowReplace();
         }
 
-        void SaveHtml(string filename)
+        void SaveHtml(string fname)
         {
 
         }
