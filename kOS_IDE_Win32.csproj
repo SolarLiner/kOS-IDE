@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="File.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +66,7 @@
     <Compile Include="GlobalOptions.Designer.cs">
       <DependentUpon>GlobalOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="kFunc.cs" />
     <Compile Include="LoadScript.cs">
       <SubType>Form</SubType>
     </Compile>
