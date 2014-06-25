@@ -57,11 +57,11 @@ namespace kOS_IDE
         List<string> Subitems;
 
         // Syntax words
-        string[] args1 =
-            { "set", "print", "until", "if", "switch", "copy", "from", "delete", "declare", "edit", "list", "lock", "on", "off", "rename", "run", "toggle", "unlock",
-                "wait", "when", "sin", "cos", "tan", "arcsin", "arccos", "arctan", "arctan2", "abs", "R"};
-        string[] args2 = 
-            {   "target", "break", "clearscreen", "reboot", "shutdown", "stage", "all", "vesselname", "altitude", "radar", "missiontime", "velocity",
+        string[] args1 = // Color one
+            { "set", "print", "until", "if", "switch", "copy", "from", "delete", "declare", "edit", "list", "lock", "on", "off", "rename", "run", "toggle", "unlock", "break", "wait", "when", "clearscreen", "reboot", "shutdown", // keywords
+			"sin", "cos", "tan", "arcsin", "arccos", "arctan", "arctan2", "abs", "R"}; // Math consts and funcs
+        string[] args2 = // kOS "consts" | Color two
+            {   "target", "stage", "all", "vesselname", "altitude", "radar", "missiontime", "velocity",
                 "then", "abort", "ag1", "ag2", "ag3", "ag4", "ag5", "ag6", "ag7", "ag8", "ag9", "ag10", "volume", "volumes", "file", "files", "parts",
                 "resources", "engines", "targets", "bodies", "parameter", "at", "to", "VESSEL",
                 "landed", "splashed", "flying", "sub_orbital", "orbiting", "escaping", "docked",
