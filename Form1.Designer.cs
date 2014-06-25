@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.Status = new System.Windows.Forms.ToolStripLabel();
             this.Stats = new System.Windows.Forms.ToolStripLabel();
@@ -56,7 +57,7 @@
             this.SaveFile = new System.Windows.Forms.SaveFileDialog();
             this.SaveHTML = new System.Windows.Forms.SaveFileDialog();
             this.opts = new kOS_IDE.Options();
-            this.Editor = new ScintillaNET.Scintilla();
+            this.Editor = new FastColoredTextBoxNS.FastColoredTextBox();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Editor)).BeginInit();
@@ -305,22 +306,35 @@
             this.Editor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Editor.AutoComplete.AutoHide = false;
-            this.Editor.AutoComplete.IsCaseSensitive = false;
-            this.Editor.AutoComplete.ListString = "";
-            this.Editor.ConfigurationManager.CustomLocation = "syntax.xml";
-            this.Editor.ConfigurationManager.Language = "kos";
-            this.Editor.IsBraceMatching = true;
+            this.Editor.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.Editor.AutoScrollMinSize = new System.Drawing.Size(115, 15);
+            this.Editor.BackBrush = null;
+            this.Editor.CharHeight = 15;
+            this.Editor.CharWidth = 8;
+            this.Editor.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.Editor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.Editor.Font = new System.Drawing.Font("Consolas", 10F);
+            this.Editor.IsReplaceMode = false;
+            this.Editor.LineNumberStartValue = ((uint)(0u));
             this.Editor.Location = new System.Drawing.Point(0, 27);
-            this.Editor.Margins.Left = 0;
-            this.Editor.Margins.Margin0.AutoToggleMarkerNumber = 0;
-            this.Editor.Margins.Margin0.Width = 20;
             this.Editor.Name = "Editor";
-            this.Editor.Scrolling.HorizontalWidth = 2;
+            this.Editor.Paddings = new System.Windows.Forms.Padding(0);
+            this.Editor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.Editor.Size = new System.Drawing.Size(952, 497);
-            this.Editor.TabIndex = 3;
-            this.Editor.TextChanged += new System.EventHandler(this.Editor_TextChanged);
-            this.Editor.Enter += new System.EventHandler(this.Editor_Enter);
+            this.Editor.TabIndex = 5;
+            this.Editor.Text = "// Welcome!";
+            this.Editor.Zoom = 100;
+            this.Editor.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.Editor_TextChanged);
             // 
             // TextEditor
             // 
@@ -375,7 +389,7 @@
         private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem replaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem textToolStripMenuItem;
-        internal ScintillaNET.Scintilla Editor;
+        public FastColoredTextBoxNS.FastColoredTextBox Editor;
     }
 }
 

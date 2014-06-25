@@ -29,48 +29,44 @@ namespace kOS_IDE
             try
             {
                 ZoomBar.Value = _own.Editor.Zoom;
-                SmartIndent.Checked = (_own.Editor.Indentation.SmartIndentType == ScintillaNET.SmartIndent.CPP2);
+                //SmartIndent.Checked = (_own.Editor.Indentation.SmartIndentType == ScintillaNET.SmartIndent.CPP2);
             }
             catch { }
         }
 
         private void SmartIndent_CheckedChanged(object sender, EventArgs e)
         {
-            if (SmartIndent.Checked) _own.Editor.Indentation.SmartIndentType = ScintillaNET.SmartIndent.CPP2;
-            else _own.Editor.Indentation.SmartIndentType = ScintillaNET.SmartIndent.None;
+           
         }
 
         private void SetFont_Click(object sender, EventArgs e)
         {
+            fontDialog.FontMustExist = true;
+            fontDialog.AllowVectorFonts = false;
+            fontDialog.AllowVerticalFonts = false;
+
             if (fontDialog.ShowDialog(this) != DialogResult.OK) return;
+            AppOptions.Font = fontDialog.Font.FontFamily.Name;
 
             foreach (TextEditor frm in OpenedForms.Forms)
             {
-                frm.Editor.Styles.Default.Font = fontDialog.Font;
-                frm.Editor.Lexing.Colorize();
+                frm.Editor.Font = fontDialog.Font;
+                frm.Editor.OnTextChanged();
             }
         }
 
         private void ZoomBar_Scroll(object sender, EventArgs e)
         {
             if (Owner != null)
-            {
-                float zm = (float)ZoomBar.Value;
-                if (zm < 0) zm = -(float)(1 / zm);
-                else zm /= 10.0f;
-                int add = (ZoomBar.Value < 0 ? 0 : 100);
-                Zoom.Text = "Zoom: " + (100 * zm + add) + "%";
+            {                
+                Zoom.Text = "Zoom: " + (ZoomBar.Value) + "%";
                 Owner.Editor.Zoom = ZoomBar.Value;
             }
             else
             {
                 foreach (TextEditor frm in OpenedForms.Forms)
                 {
-                    float zm = (float)ZoomBar.Value;
-                    if (zm < 0) zm = -(float)(1 / zm);
-                    else zm /= 10.0f;
-                    int add = (ZoomBar.Value < 0 ? 0 : 100);
-                    Zoom.Text = "Zoom: " + (100 * zm+add) + "%";
+                    Zoom.Text = "Zoom: " + (ZoomBar.Value) + "%";
                     frm.Editor.Zoom = ZoomBar.Value;
                 }
             }

@@ -40,13 +40,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.Status = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.ZoomLabel = new System.Windows.Forms.Label();
-            this.ZoomBar = new System.Windows.Forms.TrackBar();
-            this.SmartIndent = new System.Windows.Forms.CheckBox();
+            this.genOptions = new kOS_IDE.Options();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ZoomBar)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -163,7 +160,7 @@
             // 
             this.Status.AutoSize = true;
             this.Status.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.Status.Location = new System.Drawing.Point(0, 408);
+            this.Status.Location = new System.Drawing.Point(0, 495);
             this.Status.Name = "Status";
             this.Status.Size = new System.Drawing.Size(41, 13);
             this.Status.TabIndex = 2;
@@ -171,52 +168,30 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.ZoomLabel);
-            this.groupBox3.Controls.Add(this.ZoomBar);
-            this.groupBox3.Controls.Add(this.SmartIndent);
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.genOptions);
             this.groupBox3.Location = new System.Drawing.Point(13, 235);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(449, 135);
+            this.groupBox3.Size = new System.Drawing.Size(449, 205);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Window Specific Options (will overwrite)";
             // 
-            // ZoomLabel
+            // genOptions
             // 
-            this.ZoomLabel.AutoSize = true;
-            this.ZoomLabel.Location = new System.Drawing.Point(7, 68);
-            this.ZoomLabel.Name = "ZoomLabel";
-            this.ZoomLabel.Size = new System.Drawing.Size(66, 13);
-            this.ZoomLabel.TabIndex = 4;
-            this.ZoomLabel.Text = "Zoom: 100%";
-            // 
-            // ZoomBar
-            // 
-            this.ZoomBar.Location = new System.Drawing.Point(6, 84);
-            this.ZoomBar.Maximum = 50;
-            this.ZoomBar.Minimum = -5;
-            this.ZoomBar.Name = "ZoomBar";
-            this.ZoomBar.Size = new System.Drawing.Size(437, 45);
-            this.ZoomBar.TabIndex = 3;
-            this.ZoomBar.TickFrequency = 5;
-            this.ZoomBar.Scroll += new System.EventHandler(this.ZoomBar_Scroll);
-            // 
-            // SmartIndent
-            // 
-            this.SmartIndent.AutoSize = true;
-            this.SmartIndent.Location = new System.Drawing.Point(10, 19);
-            this.SmartIndent.Name = "SmartIndent";
-            this.SmartIndent.Size = new System.Drawing.Size(86, 17);
-            this.SmartIndent.TabIndex = 0;
-            this.SmartIndent.Text = "Smart Indent";
-            this.SmartIndent.UseVisualStyleBackColor = true;
-            this.SmartIndent.CheckedChanged += new System.EventHandler(this.SmartIndent_CheckedChanged);
+            this.genOptions.Location = new System.Drawing.Point(13, 19);
+            this.genOptions.Name = "genOptions";
+            this.genOptions.Owner = null;
+            this.genOptions.Size = new System.Drawing.Size(381, 188);
+            this.genOptions.TabIndex = 0;
             // 
             // GlobalOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(474, 421);
+            this.ClientSize = new System.Drawing.Size(474, 508);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.Status);
             this.Controls.Add(this.groupBox2);
@@ -235,8 +210,6 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ZoomBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -256,8 +229,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label Status;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.CheckBox SmartIndent;
-        private System.Windows.Forms.Label ZoomLabel;
-        private System.Windows.Forms.TrackBar ZoomBar;
+        private Options genOptions;
     }
 }

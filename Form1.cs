@@ -6,7 +6,8 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
-using ScintillaNET;
+//using ScintillaNET;
+using FastColoredTextBoxNS;
 
 
 [assembly: AssemblyVersion("0.37.*")] // TODO: Change before release
@@ -38,6 +39,19 @@ namespace kOS_IDE
             }
         }
 
+        #region Styles
+
+        Style Comment  = new TextStyle(Brushes.Green,     null, FontStyle.Italic);
+        Style _String  = new TextStyle(Brushes.Red,       null, FontStyle.Regular);
+        Style Keyword  = new TextStyle(Brushes.Blue,      null, FontStyle.Bold);
+        Style Entity   = new TextStyle(Brushes.LightBlue, null, FontStyle.Regular);
+        Style Constant = new TextStyle(Brushes.Purple,    null, FontStyle.Regular);
+
+        Style[] styles;
+
+        #endregion
+
+
         bool _optshw;
         bool OptionsShown
         {
@@ -53,112 +67,64 @@ namespace kOS_IDE
         bool CommentStripper;
 
         char[] EventChars = { ' ', '\n', ':' };
-        List<string> KeysAndVars;
-        List<string> Subitems;
 
         // Syntax words
-        string[] args1 = // Color one
-            { "set", "print", "until", "if", "switch", "copy", "from", "delete", "declare", "edit", "list", "lock", "on", "off", "rename", "run", "toggle", "unlock", "break", "wait", "when", "clearscreen", "reboot", "shutdown", // keywords
-			"sin", "cos", "tan", "arcsin", "arccos", "arctan", "arctan2", "abs", "R"}; // Math consts and funcs
-        string[] args2 = // kOS "consts" | Color two
-            {   "target", "stage", "all", "vesselname", "altitude", "radar", "missiontime", "velocity",
-                "then", "abort", "ag1", "ag2", "ag3", "ag4", "ag5", "ag6", "ag7", "ag8", "ag9", "ag10", "volume", "volumes", "file", "files", "parts",
-                "resources", "engines", "targets", "bodies", "parameter", "at", "to", "VESSEL",
-                "landed", "splashed", "flying", "sub_orbital", "orbiting", "escaping", "docked",
-                "liquidfuel", "oxidizer", "electriccharge", "intakeair", "solidfuel",
-                "major", "minor",
-                "throttle", "steering", "wheelthrottle", "wheelsteering", "brakes", "gear", "legs", "chutes", "lights", "rcs", "sas", "altitude", "alt",
-                "apoapsis", "periapsis", "eta", "sessiontime", "warp", "angularmomentum", "angularvel", "surfacespeed", "verticalspeed",
-                "facing", "geoposition", "heading", "latitude", "longitude", "mag", "node", "north", "prograde",
-                "retrograde", "up", "body", "mass", "maxthrust", "status", "commrange", "incommrange", "inlight",
-                "version"};
-
-        void InitAutoComplete()
-        {
-            KeysAndVars = new List<string>();
-            
-            
-            //string autocompletion = "";
-
-            foreach (string arg in args1)
-            {
-                KeysAndVars.Add(arg + "?0");
-            }
-
-            foreach (string arg in args2)
-            {
-                KeysAndVars.Add(arg + "?1");
-            }
-
-            // Register Images
-            var imgs = new ImageList();
-            imgs.Images.Add(Properties.Resources.keyword);
-            imgs.Images.Add(Properties.Resources._class);
-            imgs.Images.Add(Properties.Resources.var);
-
-            Editor.AutoComplete.RegisterImages(imgs, Color.Black);
-
-            Subitems = new List<string>(new string[] {"distance?2", "apoapsis?2", "periapsis?2", "up?2", "pitch?2", "yaw?2", "roll?2", "mag?2", "deltav?2",
-                                                        "burnvector?2", "time?2", "clock?2", "calendar?2", "year?2", "day?2", "hour?2", "minute?2", "second?2"});
-            KeysAndVars.Sort();
-            Subitems.Sort();
-        }
+        string keywords = @"\b(set|print|until|if|switch|copy|from|delete|declare|edit|list|lock|on|off|rename|run|toggle|unlock|wait|when|to)\b";
+        string entities = @"\b(sin|cos|tan|arcsin|arccos|arctan|arctan2|abs|R)\b";
+        string consts   = @"\b(target|stage|all|vesselname|altitude|radar|missiontime|velocity|then|abort|ag1|ag2|ag3|ag4|ag5|ag6|ag7|ag8|ag9|ag10|volume|volumes|file|files|parts|resources|engines|targets|bodies|parameter|at|VESSEL|landed|splashed|flying|sub_orbital|orbiting|escaping|docked|liquidfuel|oxidizer|electriccharge|intakeair|solidfuel|major|minor|throttle|steering|wheelthrottle|wheelsteering|brakes|gear|legs|chutes|lights|rcs|sas|altitude|alt|apoapsis|periapsis|eta|sessiontime|warp|angularmomentum|angularvel|surfacespeed|verticalspeed|facing|geoposition|heading|latitude|longitude|mag|node|north|prograde|retrograde|up|body|mass|maxthrust|status|commrange|incommrange|inlight|version)\b";
 
 
         public TextEditor()
         {
             OpenedForms.NewForm = this;
-            AppOptions.Default();
             InitializeComponent();
+
+            // Setup from options
+            FontFamily ff = new FontFamily(AppOptions.Font);
+            Editor.Font = new Font(ff, 10);
 
             opts.Owner = this;
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() +"."+ Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
             filename = "";
 
-            InitAutoComplete();
+            //Editor.Lexing.SetKeywords(0, arg1);
+            //Editor.Lexing.SetKeywords(1, arg2);
+            //Editor.Lexing.SetKeywords(2, arg3);
+            //Editor.Lexing.LineCommentPrefix = "//";
 
-            // Set up Scintilla
-            Editor.Lexing.Lexer = Lexer.CppNoCase;
-            string arg1 = "";
-            foreach (string arg in args1) arg1 += arg + " ";
-            string arg2 = "";
-            foreach (string arg in args2) arg2 += arg + " ";
-            string arg3 = "";
+            //Editor.Styles[Editor.Lexing.StyleNameMap["DOCUMENT_DEFAULT"]].ForeColor = System.Drawing.Color.Black;
+            //Editor.Styles[Editor.Lexing.StyleNameMap["NUMBER"]].ForeColor = System.Drawing.Color.Orange;
+            //Editor.Styles[Editor.Lexing.StyleNameMap["WORD"]].ForeColor = System.Drawing.Color.Blue;
+            //Editor.Styles[Editor.Lexing.StyleNameMap["WORD2"]].ForeColor = System.Drawing.Color.Purple;
+            //Editor.Styles[Editor.Lexing.StyleNameMap["STRING"]].ForeColor = System.Drawing.Color.FromArgb(200, 0, 0);
+            //Editor.Styles[Editor.Lexing.StyleNameMap["CHARACTER"]].ForeColor = System.Drawing.Color.Red;
+            //Editor.Styles[Editor.Lexing.StyleNameMap["PREPROCESSOR"]].ForeColor = System.Drawing.Color.Brown;
+            //Editor.Styles[Editor.Lexing.StyleNameMap["OPERATOR"]].ForeColor = System.Drawing.Color.Black;
+            //Editor.Styles[Editor.Lexing.StyleNameMap["IDENTIFIER"]].ForeColor = System.Drawing.Color.Black;
+            //Editor.Styles[Editor.Lexing.StyleNameMap["COMMENT"]].ForeColor = System.Drawing.Color.Green;
 
-            Editor.Lexing.SetKeywords(0, arg1);
-            Editor.Lexing.SetKeywords(1, arg2);
-            Editor.Lexing.SetKeywords(2, arg3);
-            Editor.Lexing.LineCommentPrefix = "//";
 
-            Editor.Styles[Editor.Lexing.StyleNameMap["DOCUMENT_DEFAULT"]].ForeColor = System.Drawing.Color.Black;
-            Editor.Styles[Editor.Lexing.StyleNameMap["NUMBER"]].ForeColor = System.Drawing.Color.Orange;
-            Editor.Styles[Editor.Lexing.StyleNameMap["WORD"]].ForeColor = System.Drawing.Color.Blue;
-            Editor.Styles[Editor.Lexing.StyleNameMap["WORD2"]].ForeColor = System.Drawing.Color.Purple;
-            Editor.Styles[Editor.Lexing.StyleNameMap["STRING"]].ForeColor = System.Drawing.Color.FromArgb(200, 0, 0);
-            Editor.Styles[Editor.Lexing.StyleNameMap["CHARACTER"]].ForeColor = System.Drawing.Color.Red;
-            Editor.Styles[Editor.Lexing.StyleNameMap["PREPROCESSOR"]].ForeColor = System.Drawing.Color.Brown;
-            Editor.Styles[Editor.Lexing.StyleNameMap["OPERATOR"]].ForeColor = System.Drawing.Color.Black;
-            Editor.Styles[Editor.Lexing.StyleNameMap["IDENTIFIER"]].ForeColor = System.Drawing.Color.Black;
-            Editor.Styles[Editor.Lexing.StyleNameMap["COMMENT"]].ForeColor = System.Drawing.Color.Green;
 
-            Editor.AutoComplete.List = KeysAndVars;
-            Editor.AutoComplete.MaxHeight = 15;
-            Editor.AutoComplete.MaxWidth = 40;
-            Editor.AutoComplete.IsCaseSensitive = false;
-            Editor.AutoComplete.DropRestOfWord = false;
-            Editor.AutoComplete.AutoHide = false;
-            Editor.AutoComplete.AutomaticLengthEntered = true;
-            Editor.AutoComplete.StopCharacters = "{SPACE}";
-            Editor.AutoComplete.FillUpCharacters = "{TAB}:.";
+            //Editor.AutoComplete.List = KeysAndVars;
+            //Editor.AutoComplete.MaxHeight = 15;
+            //Editor.AutoComplete.MaxWidth = 40;
+            //Editor.AutoComplete.IsCaseSensitive = false;
+            //Editor.AutoComplete.DropRestOfWord = false;
+            //Editor.AutoComplete.AutoHide = false;
+            //Editor.AutoComplete.AutomaticLengthEntered = true;
+            //Editor.AutoComplete.StopCharacters = "{SPACE}";
+            //Editor.AutoComplete.FillUpCharacters = "{TAB}:.";
 
-            Editor.Indentation.BackspaceUnindents = true;
-            Editor.Indentation.IndentWidth = 4;
-            Editor.Indentation.SmartIndentType = SmartIndent.CPP2;
-            Editor.Indentation.TabIndents = true;
-            Editor.Indentation.TabWidth = 4;
-            Editor.Indentation.UseTabs = true;
-            Editor.Indentation.ShowGuides = true;
+            //Editor.Indentation.BackspaceUnindents = true;
+            //Editor.Indentation.IndentWidth = 4;
+            //Editor.Indentation.SmartIndentType = SmartIndent.CPP2;
+            //Editor.Indentation.TabIndents = true;
+            //Editor.Indentation.TabWidth = 4;
+            //Editor.Indentation.UseTabs = true;
+            //Editor.Indentation.ShowGuides = true;
+
+            styles = new Style[] { Comment, _String, Keyword, Entity, Constant };
         }
 
         private void TextEditor_Load(object sender, EventArgs e)
@@ -192,7 +158,7 @@ namespace kOS_IDE
                 if (envarg.Count() > 1)
                 {
                     Editor.Text = File.ReadAllText(envarg[1]);
-                    RefreshVars(Editor.Text);
+                    //RefreshVars(Editor.Text);
                     filename = envarg[1];
 #if RELEASE
                     Status.Text = "Loaded \"" + filename + "\".";
@@ -202,75 +168,6 @@ namespace kOS_IDE
                     //this.Text = "kOS IDE v" + version + " - " + filename;
                 }
             }
-        }
-
-        private void Editor_TextChanged(object sender, EventArgs e)
-        {
-            int wordsCount, lines, bytes, ln, cl;
-            wordsCount = Editor.Text.Split(' ').Count();
-            lines = Editor.Lines.Count;
-            bytes = ASCIIEncoding.ASCII.GetByteCount(Editor.Text);
-
-            ln = Editor.Lines.Current.Number;
-            cl = Editor.Selection.Start - Editor.Lines.Current.StartPosition;
-
-            Stats.Text = String.Format("Bytes: {0} | Words: {1} | Lines: {2} | L{3} C{4}", bytes, wordsCount, lines, ln, cl);
-
-            if (bytes > 10000)
-            {
-                Status.Text = "More than 10k bytes. Toggled comment sttriper at save. (but not removed on the editor)";
-                CommentStripper = true;
-            }
-
-            // Scintilla stuff
-            if (Editor.Text.Length < 1) return;
-
-            char last = Editor.Text[Editor.Text.Length - 1];
-            if (EventChars.Any(s => s == last))
-            {
-                switch (last)
-                {
-                    case ' ':
-                        string[] words = Editor.Text.Split(' ').Where(s => !String.IsNullOrWhiteSpace(s)).ToArray<string>();
-                        int minTwo = words.Length - 2;
-                        int minOne = minTwo + 1;
-                        if (minTwo < 0) break;
-
-                        if (("set" == words[minTwo] || "lock" == words[minTwo]))
-                        {
-                            if (KeysAndVars.Any(s => s.Substring(0, s.Length-2) == words[minOne])) break;
-                            KeysAndVars.Add(words[minOne] + "?2");
-                            KeysAndVars.Sort();
-                            Editor.AutoComplete.List = KeysAndVars;
-                        }
-                        break;
-
-                    case ':':
-                        Editor.AutoComplete.Show(Subitems);
-                        break;
-
-                    default:
-                        //Editor.AutoComplete.Show(KeysAndVars);
-                        break;
-                }
-            }
-        }
-
-        private void RefreshVars(string text)
-        {
-            InitAutoComplete();
-            string[] words = text.Split(' ');
-            for (int i = 0; i < words.Length; i++)
-            {
-                if (words[i] == "set" || words[i] == "lock")
-                {
-                    i++;
-                    if (KeysAndVars.Any(s => s == words[i])) continue;
-                    KeysAndVars.Add(words[i] + "?2");
-                }
-            }
-            KeysAndVars.Sort();
-            Editor.AutoComplete.List = KeysAndVars;
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -290,7 +187,7 @@ namespace kOS_IDE
             filename = ls.FileName;
             Editor.Text = System.IO.File.ReadAllText(filename, Encoding.ASCII);
 
-            RefreshVars(Editor.Text);
+            //RefreshVars(Editor.Text);
             
             Status.Text = "Loaded \"" + System.IO.Path.GetFileNameWithoutExtension(filename) + "\".";
         }
@@ -307,7 +204,7 @@ namespace kOS_IDE
             {
                 Status.Text = "Stripping comments and saving ...";
                 
-                string[] text = Editor.Text.Split(new char[] { '\n' }, StringSplitOptions.None);
+                string[] text = Editor.Text.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 List<string> Output = new List<string>();
                 bool added = false;
 
@@ -347,25 +244,6 @@ namespace kOS_IDE
             this.Close();
         }
 
-        private void Editor_Enter(object sender, EventArgs e)
-        {
-            if (Editor.Text.Length == 0) Editor.AutoComplete.Show(KeysAndVars);
-        }
-
-        void Editor_LinesNeedShown(object sender, ScintillaNET.LinesNeedShownEventArgs e)
-        {
-            const uint SCI_SETMARGINTYPEN = 0x08C0;
-            const uint SCI_MARGINSETTEXT = 0x09E2;
-
-            Editor.Margins.Margin1.Width = 30;
-            Editor.NativeInterface.SendMessageDirect(SCI_SETMARGINTYPEN, 0, 4);
-            for (int i = e.FirstLine - 1; i < e.LastLine - 1; i++)
-            {
-                // Enter custom Scintilla message here for margin number
-                Editor.NativeInterface.SendMessageDirect(SCI_MARGINSETTEXT, i, i.ToString());
-            }
-        }
-
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             string version = String.Format("{0}.{1}, build {2}", Assembly.GetExecutingAssembly().GetName().Version.Major, Assembly.GetExecutingAssembly().GetName().Version.Minor, Assembly.GetExecutingAssembly().GetName().Version.Build);
@@ -375,25 +253,24 @@ namespace kOS_IDE
         private void ExportHTML()
         {
             string RandomPath = Path.GetTempFileName();
-            TextWriter stream = new StreamWriter(RandomPath, false, Encoding.ASCII, 1024);
-            Editor.ExportHtml(stream, "kOS Script", false);
-            stream.Close(); stream.Dispose();
+            System.IO.File.WriteAllText(RandomPath, Editor.Text);
 
             TextEditor result = new TextEditor();
             result.FastStart = true;
-            result.Editor.Lexing.Lexer = Lexer.Xml;
+            //result.Editor.Lexing.Lexer = Lexer.Xml;
             result.Editor.Text = File.ReadAllText(RandomPath, Encoding.ASCII);
             result.Show();
         }
 
         private void hTMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            WorkWithColorizedDocument(ExportHTML);
+            //WorkWithColorizedDocument(ExportHTML);
+            ExportHTML();
         }
 
         private void refreshAutoCompletionListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RefreshVars(Editor.Text);
+            //RefreshVars(Editor.Text);
             Status.Text = "Refreshed Auto Completion list.";
         }
 
@@ -465,7 +342,7 @@ namespace kOS_IDE
 
         public void AppendLine(string text)
         {
-            if (String.IsNullOrWhiteSpace(this.Editor.Lines.Current.Text))
+            if (String.IsNullOrWhiteSpace(this.Editor.Lines.Last()))
                 Append(text + '\n');
             else
                 Append('\n' + text + '\n');
@@ -488,77 +365,58 @@ namespace kOS_IDE
                 AppendLine(line, args);
         }
 
-        public void WorkWithColorizedDocument(Action func)
-        {
-            Editor.IsCustomPaintingEnabled = false; // To allow lexing of all the document
-            Editor.Lexing.Colorize();
-
-            func(); // Do things
-
-            Editor.IsCustomPaintingEnabled = true; // Restore paint
-        }
-
-        public void WorkWithColorizedDocument<T>(Func<T> function, out T result)
-        {
-            Editor.IsCustomPaintingEnabled = false; // To allow lexing of all the document
-            Editor.Lexing.Colorize();
-
-            result = function();
-
-            Editor.IsCustomPaintingEnabled = true; // Restore paint
-        }
-
         #endregion
 
         private void ExportBBCode()
         {
-            TextEditor result = new TextEditor();
-            result.FastStart = true;
-            result.Editor.AutoComplete.List = null;
-            result.Editor.Lexing.Lexer = Lexer.Null;
-            result.Editor.Text = "[CODE]\n";
+            //TextEditor result = new TextEditor();
+            //result.FastStart = true;
+            //result.Editor.AutoComplete.List = null;
+            //result.Editor.Lexing.Lexer = Lexer.Null;
+            //result.Editor.Text = "[CODE]\n";
 
-            INativeScintilla NativeInterface = (INativeScintilla)Editor;
-            int length = NativeInterface.GetLength();
-            bool[] stylesUsed = new bool[(int)StylesCommon.Max + 1];
+            //INativeScintilla NativeInterface = (INativeScintilla)Editor;
+            //int length = NativeInterface.GetLength();
+            //bool[] stylesUsed = new bool[(int)StylesCommon.Max + 1];
 
-            for (int i = 0; i < length; i++)
-            {
-                stylesUsed[Editor.Styles.GetStyleAt(i) & (int)StylesCommon.Max] = true;
-            }
+            //for (int i = 0; i < length; i++)
+            //{
+            //    stylesUsed[Editor.Styles.GetStyleAt(i) & (int)StylesCommon.Max] = true;
+            //}
 
-            int TabWidth = Editor.Indentation.TabWidth;
+            //int TabWidth = Editor.Indentation.TabWidth;
 
-            char lc;
-            char c = '\0';
-            int LastStyle = -1;
-            for (int i = 0; i < length; i++)
-            {
-                lc = c;
-                c = NativeInterface.GetCharAt(i);
-                int style = Editor.Styles.GetStyleAt(i);
-                if (style != LastStyle && c != ' ')
-                {
-                    if (LastStyle != -1)
-                        result.Append("[/COLOR]");
+            //char lc;
+            //char c = '\0';
+            //int LastStyle = -1;
+            //for (int i = 0; i < length; i++)
+            //{
+            //    lc = c;
+            //    c = NativeInterface.GetCharAt(i);
+            //    int style = Editor.Styles.GetStyleAt(i);
+            //    if (style != LastStyle && c != ' ')
+            //    {
+            //        if (LastStyle != -1)
+            //            result.Append("[/COLOR]");
 
-                    result.Append("[COLOR=\"{0}\"]", (Editor.Styles[style].ForeColor.Name == "ffc80000" ? "Red" : Editor.Styles[style].ForeColor.Name));
-                    LastStyle = style;
-                }
+            //        result.Append("[COLOR=\"{0}\"]", (Editor.Styles[style].ForeColor.Name == "ffc80000" ? "Red" : Editor.Styles[style].ForeColor.Name));
+            //        LastStyle = style;
+            //    }
 
-                if (c != '\0') result.Append(c);
-                else result.Append("\\0");
-            }
-            if (LastStyle != -1) result.Append("[/COLOR]");
-            result.AppendLine("[/CODE]");
+            //    if (c != '\0') result.Append(c);
+            //    else result.Append("\\0");
+            //}
+            //if (LastStyle != -1) result.Append("[/COLOR]");
+            //result.AppendLine("[/CODE]");
 
-            result.Show();
-            result.filename = null;
+            //result.Show();
+            //result.filename = null;
         }
         
         private void bBCodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            WorkWithColorizedDocument(ExportBBCode);
+            //WorkWithColorizedDocument(ExportBBCode);
+            ExportBBCode();
         }
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -573,12 +431,14 @@ namespace kOS_IDE
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Editor.FindReplace.ShowFind();
+            FindForm fF = new FindForm(this.Editor);
+            fF.Show();
         }
 
         private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Editor.FindReplace.ShowReplace();
+            ReplaceForm rF = new ReplaceForm(this.Editor);
+            rF.Show();
         }
 
         void SaveHtml(string fname)
@@ -594,27 +454,33 @@ namespace kOS_IDE
 
             if (sfd.ShowDialog() != DialogResult.OK) return;
 
-            //if (sfd.FilterIndex == 1)
-            //{
-            //    System.IO.File.WriteAllText(sfd.FileName, Editor.Text); // RTF Mode not yet implemented
-            //}
-            //else
-            if (sfd.FilterIndex == 2)
+            switch (sfd.FilterIndex)
             {
-                using (TextWriter tw = new StreamWriter(sfd.FileName))
-                {
-                    Editor.IsCustomPaintingEnabled = false; // To allow lexing of all the document
-                    Editor.Lexing.Colorize();
+                case 2:
+                    System.IO.File.WriteAllText(sfd.FileName, Editor.Html);
+                    break;
 
-                    Editor.ExportHtml(tw, System.IO.Path.GetFileNameWithoutExtension(filename), false);
+                case 3:
+                    System.IO.File.WriteAllText(sfd.FileName, Editor.Rtf);
+                    break;
+                
+                default:
+                    System.IO.File.WriteAllText(sfd.FileName, Editor.Text);
+                    break;
+            }
+        }
 
-                    Editor.IsCustomPaintingEnabled = true; // Restore paint
-                }
-            }
-            else
-            {
-                System.IO.File.WriteAllText(sfd.FileName, Editor.Text);
-            }
+        private void Editor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            e.ChangedRange.ClearStyle(styles);
+
+            e.ChangedRange.SetStyle(Comment,  @"\/\/.*$", System.Text.RegularExpressions.RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(_String,  "\".*\"",   System.Text.RegularExpressions.RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(Keyword,  keywords,   System.Text.RegularExpressions.RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(Entity,   entities,   System.Text.RegularExpressions.RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(Constant, consts,     System.Text.RegularExpressions.RegexOptions.Multiline);
+
+            CommentStripper = ASCIIEncoding.ASCII.GetByteCount(Editor.Text) > 10000;
         }
     }
 }

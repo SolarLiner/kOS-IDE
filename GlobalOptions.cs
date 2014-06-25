@@ -91,22 +91,6 @@ namespace kOS_IDE
             }
         }
 
-        private void ZoomBar_Scroll(object sender, EventArgs e)
-        {
-            float zm = (float)ZoomBar.Value;
-            if (zm < 0) zm = -(float)(1 / zm);
-            else zm /= 10.0f;
-            int add = (ZoomBar.Value < 0 ? 0 : 100);
-            ZoomLabel.Text = "Zoom: " + (100 * zm + add) + "%";
-
-            AppOptions.Zoom = ZoomBar.Value;
-        }
-
-        private void SmartIndent_CheckedChanged(object sender, EventArgs e)
-        {
-            AppOptions.SmartIndent = SmartIndent.Checked;
-        }
-
         private void GlobalOptions_Load(object sender, EventArgs e)
         {
             AppOptions.Load("./config.cfg");
@@ -165,15 +149,16 @@ namespace kOS_IDE
 
     public static class AppOptions
     {
-        public static string KSPfolder;
-        public static int Zoom;
-        public static bool SmartIndent;
+        public static string KSPfolder = null;
+        public static int Zoom = 100;
+        public static bool SmartIndent = true;
+        public static string Font = "Consolas";
 
         public static class Connection
         {
             public static string Username;
-            public static bool Remember;
-            public static Psswd Password;
+            public static bool Remember = false;
+            public static Psswd Password = new Psswd("");
         }
 
         public static void Load(string filepath)
@@ -203,8 +188,11 @@ namespace kOS_IDE
                         continue;
 
                     case "Zoom":
-                        int zm = int.Parse(line[1]);
-                        Zoom = (zm > -5 && zm < 50 ? zm : 0);
+                        Zoom = int.Parse(line[1]);
+                        continue;
+
+                    case "Font":
+                        AppOptions.Font = line[1];
                         continue;
 
                     default:
@@ -222,6 +210,7 @@ namespace kOS_IDE
             Lines.Add("Password=" + Connection.Password.MD5hash + "|" + Connection.Password.CharsCount);
             Lines.Add("SmartIndent=" + SmartIndent);
             Lines.Add("Zoom=" + Zoom);
+            Lines.Add("Font=" + Font);
 
             System.IO.File.WriteAllLines(filepath, Lines.ToArray<string>());
         }
@@ -230,7 +219,7 @@ namespace kOS_IDE
         {
             KSPfolder = null;
             SmartIndent = true;
-            Zoom = 0;
+            Zoom = 100;
             Connection.Password = new Psswd();
         }
     }

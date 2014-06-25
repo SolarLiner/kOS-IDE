@@ -5,7 +5,7 @@ using System.Text;
 
 namespace kOS_IDE
 {
-    class File
+    class kFile
     {
         /// <summary>
         /// File name of the script.
@@ -36,7 +36,7 @@ namespace kOS_IDE
         /// Global initializer.
         /// </summary>
         /// <param name="FileName">FileName input (full path).</param>
-        public File(string FileName)
+        public kFile(string FileName)
         {
 
         }

@@ -81,6 +81,72 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SyntaxTextBox\AutocompleteItem.cs" />
+    <Compile Include="SyntaxTextBox\AutocompleteMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SyntaxTextBox\Bookmarks.cs" />
+    <Compile Include="SyntaxTextBox\Char.cs" />
+    <Compile Include="SyntaxTextBox\CommandManager.cs" />
+    <Compile Include="SyntaxTextBox\Commands.cs" />
+    <Compile Include="SyntaxTextBox\DocumentMap.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SyntaxTextBox\EncodingDetector.cs" />
+    <Compile Include="SyntaxTextBox\ExportToHTML.cs" />
+    <Compile Include="SyntaxTextBox\ExportToRTF.cs" />
+    <Compile Include="SyntaxTextBox\FastColoredTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SyntaxTextBox\FileTextSource.cs" />
+    <Compile Include="SyntaxTextBox\FindForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SyntaxTextBox\FindForm.designer.cs">
+      <DependentUpon>FindForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SyntaxTextBox\GoToForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SyntaxTextBox\GoToForm.designer.cs">
+      <DependentUpon>GoToForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SyntaxTextBox\Hints.cs" />
+    <Compile Include="SyntaxTextBox\Hotkeys.cs" />
+    <Compile Include="SyntaxTextBox\HotkeysEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SyntaxTextBox\HotkeysEditorForm.designer.cs">
+      <DependentUpon>HotkeysEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SyntaxTextBox\LimitedStack.cs" />
+    <Compile Include="SyntaxTextBox\Line.cs" />
+    <Compile Include="SyntaxTextBox\LinesAccessor.cs" />
+    <Compile Include="SyntaxTextBox\MacrosManager.cs" />
+    <Compile Include="SyntaxTextBox\Place.cs" />
+    <Compile Include="SyntaxTextBox\PlatformType.cs" />
+    <Compile Include="SyntaxTextBox\Range.cs" />
+    <Compile Include="SyntaxTextBox\ReplaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SyntaxTextBox\ReplaceForm.designer.cs">
+      <DependentUpon>ReplaceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SyntaxTextBox\Ruler.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SyntaxTextBox\Ruler.designer.cs">
+      <DependentUpon>Ruler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SyntaxTextBox\Style.cs" />
+    <Compile Include="SyntaxTextBox\SyntaxDescriptor.cs" />
+    <Compile Include="SyntaxTextBox\SyntaxHighlighter.cs" />
+    <Compile Include="SyntaxTextBox\TextSource.cs" />
+    <Compile Include="SyntaxTextBox\TypeDescriptor.cs" />
+    <Compile Include="SyntaxTextBox\UnfocusablePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SyntaxTextBox\VisualMarker.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -103,6 +169,21 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SyntaxTextBox\FastColoredTextBox.resx">
+      <DependentUpon>FastColoredTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SyntaxTextBox\FindForm.resx">
+      <DependentUpon>FindForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SyntaxTextBox\GoToForm.resx">
+      <DependentUpon>GoToForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SyntaxTextBox\HotkeysEditorForm.resx">
+      <DependentUpon>HotkeysEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SyntaxTextBox\ReplaceForm.resx">
+      <DependentUpon>ReplaceForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -120,13 +201,6 @@
     <None Include="class.png" />
     <Content Include="ProfilingSessions\Session20140521_150729.sdps" />
     <Content Include="SciLexer.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ScintillaNET.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="syntax.xml">
-      <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

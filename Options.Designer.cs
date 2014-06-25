@@ -70,12 +70,13 @@
             // ZoomBar
             // 
             this.ZoomBar.Location = new System.Drawing.Point(4, 143);
-            this.ZoomBar.Maximum = 50;
-            this.ZoomBar.Minimum = -5;
+            this.ZoomBar.Maximum = 600;
+            this.ZoomBar.Minimum = 20;
             this.ZoomBar.Name = "ZoomBar";
             this.ZoomBar.Size = new System.Drawing.Size(374, 45);
             this.ZoomBar.TabIndex = 2;
-            this.ZoomBar.TickFrequency = 5;
+            this.ZoomBar.TickFrequency = 20;
+            this.ZoomBar.Value = 20;
             this.ZoomBar.Scroll += new System.EventHandler(this.ZoomBar_Scroll);
             // 
             // Zoom
