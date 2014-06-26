@@ -63,7 +63,7 @@ namespace kOS_IDE
         string[] args2 = 
             {   "target", "break", "clearscreen", "reboot", "shutdown", "stage", "all", "vesselname", "altitude", "radar", "missiontime", "velocity",
                 "then", "abort", "ag1", "ag2", "ag3", "ag4", "ag5", "ag6", "ag7", "ag8", "ag9", "ag10", "volume", "volumes", "file", "files", "parts",
-                "resources", "engines", "targets", "bodies", "parameter", "at", "to", "VESSEL",
+                "resources", "engines", "targets", "bodies", "parameter", "at", "to", "VESSEL", "VECDRAW", "VECDRAWARGS",
                 "landed", "splashed", "flying", "sub_orbital", "orbiting", "escaping", "docked",
                 "liquidfuel", "oxidizer", "electriccharge", "intakeair", "solidfuel",
                 "major", "minor",
@@ -71,7 +71,9 @@ namespace kOS_IDE
                 "apoapsis", "periapsis", "eta", "sessiontime", "warp", "angularmomentum", "angularvel", "surfacespeed", "verticalspeed",
                 "facing", "geoposition", "heading", "latitude", "longitude", "mag", "node", "north", "prograde",
                 "retrograde", "up", "body", "mass", "maxthrust", "status", "commrange", "incommrange", "inlight",
-                "version"};
+                "version",
+                "SHOW", "START", "VEC", "label"
+            };
 
         void InitAutoComplete()
         {
